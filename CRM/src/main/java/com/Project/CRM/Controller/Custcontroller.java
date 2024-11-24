@@ -25,6 +25,11 @@ public class Custcontroller {
         return service.createCust(customer);
     }
 
+    @PutMapping("/creates")
+    public String CreateCusts(@RequestBody List<Customer> custs){
+        return service.createCusts(custs);
+    }
+
     @GetMapping("/getall")
     public List<Customer> GetCust(){
         return service.GetCustomers();
@@ -61,13 +66,13 @@ public class Custcontroller {
     }
 
     @GetMapping("/getbyfname")
-    public Customer getbyfname(@RequestParam String fname){
-        return service.getCustByFname(fname);
+    public List<Customer> getbyfname(@RequestParam String fname){
+        return service.getCustsByFname(fname);
     }
 
     @GetMapping("/getbylname")
-    public Customer getbylname(@RequestParam String lname){
-        return service.getCustByLname(lname);
+    public List<Customer> getbylname(@RequestParam String lname){
+        return service.getCustsByLname(lname);
     }
 
     @GetMapping("/getbyemail")
@@ -83,6 +88,16 @@ public class Custcontroller {
     @GetMapping("/getbyage")
     public List<Customer> getbyage(@RequestParam int age){
         return service.getCustByAges(age);
+    }
+
+    @GetMapping("/getbyageabove")
+    public List<Customer> getByAgeAbove(@RequestParam int age){
+        return service.getCustsByAgeAbove(age);
+    }
+
+    @GetMapping("/getbyagebelow")
+    public List<Customer> getByAgeBelow(@RequestParam int age){
+        return service.getCustsByAgeBelow(age);
     }
 
 
@@ -114,6 +129,26 @@ public class Custcontroller {
     @DeleteMapping("/deleteAll")
     public String deleteAllCust(){
         return service.deleteAllCust();
+    }
+
+    @DeleteMapping("/deletebyfname")
+    public String deleteCustByFname(@RequestParam String name){
+        return service.deleteCustByFname(name);
+    }
+
+    @DeleteMapping("/deletebylname")
+    public String deleteCustByLname(@RequestParam String name){
+        return service.deleteCustByLname(name);
+    }
+
+    @DeleteMapping("/deletebyemail")
+    public String deleteCustByEmail(@RequestParam String email){
+        return service.deleteCustByEmail(email);
+    }
+
+    @DeleteMapping("/deletebynumber")
+    public String deleteCustByNumber(@RequestParam String number){
+        return service.deleteCustByNumber(number);
     }
 
 }

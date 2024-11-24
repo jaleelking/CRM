@@ -8,6 +8,8 @@ public interface CustomerService {
 
     Customer createCust(Customer customer);
 
+    String createCusts(List<Customer> custs);
+
     List<Customer> GetCustomers();
 
     Customer GetCustByID(Long id);
@@ -22,15 +24,19 @@ public interface CustomerService {
 
     List<Integer> getAllAges();
 
-    Customer getCustByFname(String fname);
+    List<Customer> getCustsByFname(String fname);
 
-    Customer getCustByLname(String lname);
+    List<Customer> getCustsByLname(String lname);
 
     Customer getCustByEmail(String email);
 
     Customer getCustByNumber(String number);
 
     List<Customer> getCustByAges(int age);
+
+    List<Customer> getCustsByAgeAbove(int age);
+
+    List<Customer> getCustsByAgeBelow(int age);
 
     Customer update(Long id, Customer cust);
 
@@ -44,6 +50,14 @@ public interface CustomerService {
     String deleteCust(Long id);
 
     String deleteAllCust();
+
+    String deleteCustByFname(String name);
+
+    String deleteCustByLname(String name);
+
+    String deleteCustByEmail(String email);
+
+    String deleteCustByNumber(String number);
 
 
 

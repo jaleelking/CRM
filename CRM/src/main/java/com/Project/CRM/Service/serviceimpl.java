@@ -3,6 +3,7 @@ package com.Project.CRM.Service;
 import com.Project.CRM.Entities.Customer;
 import com.Project.CRM.Repo.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,12 +23,19 @@ public class serviceimpl implements CustomerService {
         return savedCustomer;
     }
 
+    public String createCusts(List<Customer> custs){
+        for(int i=0;i<custs.size();i++){
+            repo.save(custs.get(i));
+        }
+        return "Created customers successfully";
+    }
+
     public List<Customer> GetCustomers(){
         return repo.findAll();
     }
 
     public Customer GetCustByID(Long id){
-        return repo.findById(id).orElseThrow(()-> new RuntimeException("id asalu ledhu ra yerrepulka"));
+        return repo.findById(id).orElseThrow(()-> new RuntimeException("Invalid ID"));
     }
 
     public List<String> allfirstnames(){
@@ -77,23 +85,28 @@ public class serviceimpl implements CustomerService {
         return ans;
     }
 
-    public Customer getCustByFname(String fname){
-        List<Customer> custs = repo.findAll();
-        Customer ans=null;
-        for(int i=0;i<custs.size();i++){
-            if(fname.equals(custs.get(i).getFirstname())){
-                ans=custs.get(i);
-            }
-        }
-        return ans;
+
+
+
+    public List<Customer> getCustsByFname(String fname){
+//        List<Customer> custs = repo.findAll();
+//        List<Customer> ans = new ArrayList<>();
+//        for(int i=0;i<custs.size();i++){
+//            if(fname.equals(custs.get(i).getFirstname())){
+//                ans.add(custs.get(i));
+//            }
+//        }
+//        return ans;
+
+        return repo.findCustomersByFirstname(fname); //by using query method, which means interacting with DB using queries.
     }
 
-    public Customer getCustByLname(String lname){
+    public List<Customer> getCustsByLname(String lname){
         List<Customer> custs = repo.findAll();
-        Customer ans=null;
+        List<Customer> ans = new ArrayList<>();
         for(int i=0;i<custs.size();i++){
             if(lname.equals(custs.get(i).getLastname())){
-                ans=custs.get(i);
+                ans.add(custs.get(i));
             }
         }
         return ans;
@@ -132,8 +145,16 @@ public class serviceimpl implements CustomerService {
         return ans;
     }
 
+    public List<Customer> getCustsByAgeAbove(int age){
+        return repo.getCustsByAgeAbove(age);
+    }
+
+    public List<Customer> getCustsByAgeBelow(int age){
+        return repo.getCustsByAgeBelow(age);
+    }
+
     public Customer update(Long id, Customer cust){
-        Customer prevcust = repo.findById(id).orElseThrow(()->new RuntimeException("Invalid id ra pulka"));
+        Customer prevcust = repo.findById(id).orElseThrow(()->new RuntimeException("Invalid ID"));
         prevcust.setFirstname(cust.getFirstname());
         prevcust.setLastname(cust.getLastname());
         prevcust.setEmail(cust.getEmail());
@@ -145,7 +166,7 @@ public class serviceimpl implements CustomerService {
     }
 
     public Customer updateName(Long id,String fname, String lname){
-        Customer cust = repo.findById(id).orElseThrow(() -> new RuntimeException("number sarega evu ra puka"));
+        Customer cust = repo.findById(id).orElseThrow(() -> new RuntimeException("Invalid ID"));
         cust.setFirstname(fname);
         cust.setLastname(lname);
         repo.save(cust);
@@ -153,14 +174,14 @@ public class serviceimpl implements CustomerService {
     }
 
     public Customer updateEmail(Long id, String email){
-        Customer cust = repo.findById(id).orElseThrow(()-> new RuntimeException("Invaid id ra "));
+        Customer cust = repo.findById(id).orElseThrow(()-> new RuntimeException("Invalid ID"));
         cust.setEmail(email);
         repo.save(cust);
         return cust;
     }
 
     public Customer updateNumber(Long id, String number){
-        Customer cust = repo.findById(id).orElseThrow(()->new RuntimeException("invalid id ra  "));
+        Customer cust = repo.findById(id).orElseThrow(()->new RuntimeException("Invalid ID"));
         cust.setNumber(number);
         repo.save(cust);
         return cust;
@@ -171,9 +192,30 @@ public class serviceimpl implements CustomerService {
         return "Deleted Successfully";
     }
 
+
     public String deleteAllCust(){
         repo.deleteAll();
         return "All Customers Deleted Successfully";
+    }
+
+    public String deleteCustByFname(String name){
+        repo.deleteCustByFname(name);
+        return "Deleted by FirstName successfully";
+    }
+
+    public String deleteCustByLname(String name){
+        repo.deleteCustByLname(name);
+        return "Deleted by LastName successfully";
+    }
+
+    public String deleteCustByEmail(String email){
+        repo.deleteCustByEmail(email);
+        return "Deleted by Email successfully";
+    }
+
+    public String deleteCustByNumber(String number){
+        repo.deleteCustByNumber(number);
+        return "Deleted by Number successfully";
     }
 
 
